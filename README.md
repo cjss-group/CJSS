@@ -1,3 +1,3 @@
-# Cue
+# CJSS
 
-A CSS based web framework
+##### A CSS based web framework

@@ -20,6 +20,30 @@ h1 {
 }
 ```
 
+If you wish to pass content through a component, use `${yield}`.
+
+```html
+<component>My Component</component>
+```
+
+```css
+component {
+  --html:(
+    <h2>${yield}</h2>
+    <p>This is a component</p>
+  );
+}
+```
+
+This will render as:
+
+```html
+<component>
+  <h2>My Component</h2>
+  <p>This is a component</p>
+</component>
+```
+
 #### JavaScript
 
 You can use JavaScript to define the behavior of things right from your HTML. You want somthing to happen on a thing when you click it and don’t want to go into your JS file? Do it right from your CSS file. If you are selecting the `script` element it will assume you are writing a global script, but everywhere else, the keyword `this` will map to the selector you are in.

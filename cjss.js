@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function (event) {
   (function () {
+    var ev = code => (Function(code))();
     var l = document.styleSheets.length;
     for (var i = 0; i < l; ++i) {
       var sheet = document.styleSheets && document.styleSheets[i];
@@ -13,20 +14,20 @@ document.addEventListener('DOMContentLoaded', function (event) {
             var selector = r[j].style.parentRule.selectorText;
             var el = document.querySelectorAll(selector);
             if (data) {
-              eval(`data = { ${data.trim().slice(1, -1)} }`);
+              ev(`data = { ${data.trim().slice(1, -1)} }`);
             }
             if (html) {
               el.forEach(function (e) {
                 const yield = e.innerHTML;
-                e.innerHTML = eval('`' + html.trim().slice(1, -1) + '`');
+                e.innerHTML = ev('`' + html.trim().slice(1, -1) + '`');
               });
             }
             if (selector === 'script') {
-              eval(js.trim().slice(1, -1));
+              ev(js.trim().slice(1, -1));
             } else {
               if (js) {
                 for (n = 0; n < el.length; n++) {
-                  eval(js.trim().slice(1, -1).replace(new RegExp('this', 'g'), `document.querySelectorAll('${selector}')[${n}]`));
+                  ev(js.trim().slice(1, -1).replace(new RegExp('this', 'g'), `document.querySelectorAll('${selector}')[${n}]`));
                 }
               }
             }

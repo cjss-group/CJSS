@@ -38,7 +38,7 @@ You can use JavaScript to define the behavior of things right from your HTML. Yo
 
 #### Data
 
-You can add data to your project. Probably useful for somthing. Do it using the `--data` attrubute. It should be formatted as JSON.
+You can add data to your project. Probably useful for something. Do it using the `--data` attribute. It should be formatted as JSON.
 
 ```css
 nav {

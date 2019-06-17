@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
             }
             if (html) {
               el.forEach(function (e) {
+                const yield = e.innerHTML;
                 e.innerHTML = eval('`' + html.trim().slice(1, -1) + '`');
               });
             }

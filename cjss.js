@@ -2,8 +2,12 @@ document.addEventListener('DOMContentLoaded', function (event) {
   function cjss(s) {
     for (var i = 0; i < s.length; ++i) {
       if (s[i].constructor.name === 'CSSImportRule') {
-        var n = s[i].styleSheet.cssRules;
-        cjss(n);
+        try {
+          var n = s[i].styleSheet.cssRules;
+          if (n) cjss(n);
+        } catch (e) {
+          if (e.name !== "SecurityError") throw e;
+        }
       } else if (s[i].constructor.name === 'CSSStyleRule') {
         var js = s[i].style.getPropertyValue('--js');
         var html = s[i].style.getPropertyValue('--html');

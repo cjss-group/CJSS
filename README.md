@@ -46,7 +46,7 @@ This will render as:
 
 #### JavaScript
 
-You can use JavaScript to define the behavior of things right from your HTML. You want somthing to happen on a thing when you click it and don’t want to go into your JS file? Do it right from your CSS file. If you are selecting the `script` element it will assume you are writing a global script, but everywhere else, the keyword `this` will map to the selector you are in.
+You can use JavaScript to define the behavior of things right from your HTML. You want something to happen on a thing when you click it and don’t want to go into your JS file? Do it right from your CSS file. If you are selecting the `script` element it will assume you are writing a global script, but everywhere else, the keyword `this` will map to the selector you are in.
 
 ```css
 .item {

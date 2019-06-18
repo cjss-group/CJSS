@@ -3,78 +3,63 @@
 
   /**
    * Get value of a rule's property and remove surrounding parentheses.
-   * @param rule The CSSStyleRule, which to select from.
-   * @param propertyName The name/key which to select.
+   * @param {CSSStyleRule} rule The CSSStyleRule, which to select from.
+   * @param {String} propertyName The name/key which to select.
+   * @returns {String} The contents of the given property, or empty if no such
+   * rule exists.
    **/
   function getPureProperty(rule, propertyName) {
     const raw = rule.style.getPropertyValue(propertyName);
-    return raw.trim().slice(1, -1);
+    return raw.replace(/^\s*\(([\s\S]*)\)\s*$/g,'$1');
   }
 
   /**
-   * Evaluate a string containing JavaScript.
-   * @param code The JavaScript code.
-   * @param variables Local variables. Type [Object]. Keys and values correspond to the variable names and values.
-   * @param _this The "this" variable inside the script. null indicates global scope.
+   * Get the rule list for a given stylesheet
+   *
+   * @param {CSSStyleSheet} styleSheet The stylesheet in to get the rules from.
+   * @returns {CSSRuleList} The rules of this stylesheet.
    */
-  function safeEval(code, variables = {}, _this = null) {
-    const argumentNames = Object.keys(variables);
-    const argumentValues = Object.values(variables);
-
-    const fn = new Function(...argumentNames, code);
-    return fn.apply(_this, argumentValues);
+  function ruleList(styleSheet) {
+    return styleSheet.rules || styleSheet.cssRules;
   }
 
   /**
-   * Runs CJSS rules - CSS rules with the special properties --html, --js and --data.
-   * @param rules An array of CJSS rules.
+   * Runs CJSS rules - CSS rules with the special properties `--html`,
+   * `--js` and `--data`.
+   * 
+   * @param {CSSRuleList} rules An array-like object of CJSS rules.
    **/
   function cjss(rules) {
-    for (let rule of rules) {
-      const ruleName = rule.constructor.name;
+    for (const rule of rules) {
 
-      // Handle imports (recursive)
-      if (ruleName === 'CSSImportRule') {
-        try {
-          const importedRules = rule.styleSheet.cssRules;
-          if (importedRules) cjss(importedRules);
-        } catch (e) {
-          if (e.name !== "SecurityError") throw e;
-        }
+      // Handle imports recursively
+      if (rule instanceof CSSImportRule) {
+        const importedRules = ruleList(rule.styleSheet);
+        cjss(importedRules);
       }
 
-      else if (ruleName === 'CSSStyleRule') {
+      else if (rule instanceof CSSStyleRule) {
         const selector = rule.style.parentRule.selectorText;
         const elements = document.querySelectorAll(selector);
 
-        let js = getPureProperty(rule, '--js');
-        let html = getPureProperty(rule, '--html');
-        let data = getPureProperty(rule, '--data');
+        const js = getPureProperty(rule, '--js');
+        const html = getPureProperty(rule, '--html');
+        const rawData = getPureProperty(rule, '--data');
 
-        if (data) {
-          data = safeEval(`return ({ ${ data } })`);
-        }
+        const data = rawData ? (0, eval)(`({ ${rawData} })`) : {};
 
         if (html) {
-          for (let element of elements) {
-            const yield = element.innerHTML;
-
-            element.innerHTML = safeEval(
-              `return (\`${ html }\`)`,
-              { data, yield },
-              element
-            );
+          const renderHTML = new Function('yield,data',`return \`${html}\`;`);
+          for (const element of elements) {
+            element.innerHTML = renderHTML(element.innerHTML, data);
           }
         }
 
         if (js) {
-          if (selector === 'script') {
-            safeEval(js, { data });
-            continue;
-          }
-
-          for (let element of elements) {
-            safeEval(js, { data }, element);
+          const action = new Function('data', js);
+          if (selector === 'script') action(data);
+          else for (const element of elements) {
+            action.call(element, data);
           }
         }
       }
@@ -85,11 +70,9 @@
    * Plug every stylesheet in the document into the cjss function.
    */
   function initialize() {
-    for (let sheet of document.styleSheets) {
-      const rules = sheet.rules || sheet.cssRules;
-
-      if (!rules || !rules.length) continue;
-      cjss(rules);
+    for (const sheet of document.styleSheets) {
+      const rules = ruleList(sheet);
+      if (rules) cjss(rules);
     }
   }
 

@@ -81,4 +81,8 @@ nav {
 }
 ```
 
-## [Play with CJSS on Codepen](https://codepen.io/scottkellum/pen/WqwjLm)
+# Examples
+
+[What to watch carousel by Richard Ekwonye](https://codepen.io/ekwonye/full/QXEzZv)
+
+[Fork CJSS and play with it yourself on Codepen](https://codepen.io/scottkellum/pen/WqwjLm)

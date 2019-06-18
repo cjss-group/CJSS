@@ -61,7 +61,7 @@
   }
 
   /**
-   * Plug every stylesheet into the document into the cjss function.
+   * Plug every stylesheet in the document into the cjss function.
    */
   function initialize() {
     for (let sheet of document.styleSheets) {

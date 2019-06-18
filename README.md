@@ -82,7 +82,3 @@ nav {
 ```
 
 ## [Play with CJSS on Codepen](https://codepen.io/scottkellum/pen/WqwjLm)
-
-### Should I use CJSS in my project?
-
-No. This is a joke I took way too far.

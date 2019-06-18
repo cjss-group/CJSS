@@ -1,0 +1,24 @@
+nav {
+  --data:(
+    links: ['one', 'two', 'three'],
+  );
+  --html:(
+    <h3>${yield}</h3>
+    <div class="item">${data.links[0]}</div>
+    <div class="item">${data.links[1]}</div>
+    <div class="item">${data.links[2]}</div>
+  );
+}
+
+nav .item {
+  cursor: pointer;
+  --js:(
+    function toggle() {
+      this.classList.toggle('active');
+    }
+    this.addEventListener('click', toggle);
+  );
+}
+nav .item.active {
+  color: red;
+}

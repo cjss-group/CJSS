@@ -1,44 +1,76 @@
-document.addEventListener('DOMContentLoaded', function (event) {
-  function cjss(s) {
-    for (var i = 0; i < s.length; ++i) {
-      if (s[i].constructor.name === 'CSSImportRule') {
-        var n = s[i].styleSheet.cssRules;
-        cjss(n);
-      } else if (s[i].constructor.name === 'CSSStyleRule') {
-        var js = s[i].style.getPropertyValue('--js');
-        var html = s[i].style.getPropertyValue('--html');
-        var data = s[i].style.getPropertyValue('--data');
-        var selector = s[i].style.parentRule.selectorText;
-        var el = document.querySelectorAll(selector);
+(() => {
+
+  /**
+   * Get value of a rule's property and remove surrounding parentheses.
+   * @param rule The CSSStyleRule, which to select from.
+   * @param propertyName The name/key which to select.
+   **/
+  function getPureProperty(rule, propertyName) {
+    const raw = rule.style.getPropertyValue(propertyName);
+    return raw.trim().slice(1, -1);
+  }
+
+  /**
+   * Runs CJSS rules - CSS rules with the special properties --html, --js and --data.
+   * @param rules An array of CJSS rules.
+   **/
+  function cjss(rules) {
+    for (let rule of rules) {
+      const ruleName = rule.constructor.name;
+
+      // Handle imports (recursive)
+      if (ruleName === 'CSSImportRule') {
+        const importedRules = rule.styleSheet.cssRules;
+        cjss(importedRules);
+      }
+
+      else if (ruleName === 'CSSStyleRule') {
+        const selector = rule.style.parentRule.selectorText;
+        const elements = document.querySelectorAll(selector);
+
+        let js = getPureProperty(rule, '--js');
+        let html = getPureProperty(rule, '--html');
+        let data = getPureProperty(rule, '--data');
+
         if (data) {
-          eval(`data = { ${data.trim().slice(1, -1)} }`);
+          data = eval(`({ ${ data } })`);
         }
+
         if (html) {
-          el.forEach(function (e) {
-            const yield = e.innerHTML;
-            e.innerHTML = eval('`' + html.trim().slice(1, -1) + '`');
-          });
+          for (let element of elements) {
+            const yield = element.innerHTML;
+
+            // eval could be removed with a "shallow parser".
+            element.innerHTML = eval(`\`${ html }\``);
+          }
         }
+
         if (js) {
           if (selector === 'script') {
-            eval(js.trim().slice(1, -1));
-          } else {
-            for (n = 0; n < el.length; n++) {
-              eval(js.trim().slice(1, -1).replace(new RegExp('this', 'g'), `document.querySelectorAll('${selector}')[${n}]`));
-            }
+            eval(js);
+            continue;
+          }
+
+          // There is a lot of room for optimization here.
+          for (let n = 0; n < elements.length; n++) {
+            eval(js.replace(/this/g, `document.querySelectorAll('${ selector }')[${ n }]`));
           }
         }
       }
     }
   }
-  var l = document.styleSheets.length;
-  for (var i = 0; i < l; ++i) {
-    var sheet = document.styleSheets && document.styleSheets[i];
-    if (sheet) {
-      var r = sheet.rules ? sheet.rules : sheet.cssRules;
-      if (r) {
-        cjss(r);
-      }
+
+  /**
+   * Plug every stylesheet in the document into the cjss function.
+   */
+  function initialize() {
+    for (let sheet of document.styleSheets) {
+      const rules = sheet.rules || sheet.cssRules;
+
+      if (!rules || !rules.length) continue;
+      cjss(rules);
     }
   }
-});
+
+  document.addEventListener('DOMContentLoaded', initialize);
+})();

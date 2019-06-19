@@ -48,7 +48,7 @@
         if (js) {
           if (selector === 'script') {
             eval(js);
-            return;
+            continue;
           }
 
           // There is a lot of room for optimization here.

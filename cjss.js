@@ -13,8 +13,8 @@
   /**
    * Evaluate a string containing JavaScript.
    * @param code The JavaScript code.
-   * @param _this The "this" variable inside the script. Set it to null for global scope.
    * @param variables Local variables. Type [Object]. Keys and values correspond to the variable names and values.
+   * @param _this The "this" variable inside the script. null indicates global scope.
    */
   function safeEval(code, variables = {}, _this = null) {
     const argumentNames = Object.keys(variables);

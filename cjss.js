@@ -14,10 +14,10 @@
   /**
    * Evaluate a string containing JavaScript.
    * @param code The JavaScript code.
-   * @param _this The "this" variable inside the script. Set it to null for global scope.
    * @param variables Local variables. Type [Object]. Keys and values correspond to the variable names and values.
+   * @param _this The "this" variable inside the script. null indicates global scope.
    */
-  function safeEval(code, _this = {}, variables = {}) {
+  function safeEval(code, variables = {}, _this = null) {
     const argumentNames = Object.keys(variables);
     const argumentValues = Object.values(variables);
 
@@ -61,20 +61,20 @@
 
             element.innerHTML = safeEval(
               `return (\`${ html }\`)`,
-              element,
-              { data, yield }
+              { data, yield },
+              element
             );
           }
         }
 
         if (js) {
           if (selector === 'script') {
-            safeEval(js, null, { data });
+            safeEval(js, { data });
             continue;
           }
 
           for (let element of elements) {
-            safeEval(js, element, { data });
+            safeEval(js, { data }, element);
           }
         }
       }

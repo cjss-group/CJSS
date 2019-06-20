@@ -1,3 +1,4 @@
+
 (() => {
 
   /**
@@ -20,8 +21,12 @@
 
       // Handle imports (recursive)
       if (ruleName === 'CSSImportRule') {
-        const importedRules = rule.styleSheet.cssRules;
-        cjss(importedRules);
+        try {
+          const importedRules = rule.styleSheet.cssRules;
+          if (importedRules) cjss(importedRules);
+        } catch (e) {
+          if (e.name !== "SecurityError") throw e;
+        }
       }
 
       else if (ruleName === 'CSSStyleRule') {

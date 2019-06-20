@@ -23,6 +23,13 @@
     return styleSheet.rules || styleSheet.cssRules;
   }
 
+  const preprocessJSON = json => `{${json
+    .replace(/'([^\\']*(?:(?:(?:\\.))+[^\\']*)*)'/g,(_,str) =>
+      `"${str.replace("\\'","'").replace(/((?:[^\\]|^)(?:\\.)*)"/,'$1\\"')}"`
+    ).replace(/([^{,\s]*[^{,\s'"])\s*:/g,'"$1":')
+    .replace(/,\s*(]|}|$)/g,'$1')
+  }}`;
+
   /**
    * Runs CJSS rules - CSS rules with the special properties `--html`,
    * `--js` and `--data`.
@@ -34,8 +41,7 @@
 
       // Handle imports recursively
       if (rule instanceof CSSImportRule) {
-        const importedRules = ruleList(rule.styleSheet);
-        cjss(importedRules);
+        cjss(rule.styleSheet);
       }
 
       else if (rule instanceof CSSStyleRule) {
@@ -46,7 +52,8 @@
         const html = getPureProperty(rule, '--html');
         const rawData = getPureProperty(rule, '--data');
 
-        const data = rawData ? JSON.parse(`{ ${rawData} }`) : {};
+        let data = rawData ? JSON.parse(preprocessJSON(rawData)) : {};
+
         if (html) {
           const renderHTML = new Function('yield,data', `return \`${html}\`;`);
           for (const element of elements) {
@@ -74,6 +81,8 @@
       if (rules) cjss(rules);
     }
   }
-
-  document.addEventListener('DOMContentLoaded', initialize);
+  
+  if (['complete','interactive','loaded'].includes(document.readyState)) {
+     initialize();
+  } else document.addEventListener('DOMContentLoaded', initialize);
 })();

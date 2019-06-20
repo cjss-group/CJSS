@@ -16,6 +16,7 @@ nav .item {
     function toggle() {
       this.classList.toggle('active');
     }
+
     this.addEventListener('click', toggle);
   );
 }

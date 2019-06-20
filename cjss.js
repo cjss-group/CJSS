@@ -23,6 +23,16 @@
     return styleSheet.rules || styleSheet.cssRules;
   }
 
+  /**
+   * Convert lazy JavaScript syntax for a JSON object into strict JSON ready
+   * for parsing.
+   * 
+   * In the lazy syntax, trailing commas are allowed, single-quoted strings
+   * are allowed, and object keys do not have to be quoted.
+   *
+   * @param {String} json JSON in JavaScript syntax.
+   * @returns {String} JSON converted to strict syntax.
+   */
   const preprocessJSON = json => `{${json
     .replace(/'([^\\']*(?:(?:(?:\\.))+[^\\']*)*)'/g,(_,str) =>
       `"${str.replace("\\'","'").replace(/((?:[^\\]|^)(?:\\.)*)"/,'$1\\"')}"`

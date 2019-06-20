@@ -48,7 +48,7 @@
 
         const data = rawData ? JSON.parse(`{ ${rawData} }`) : {};
         if (html) {
-          const renderHTML = new Function('yield,data',`return \`${html}\`;`);
+          const renderHTML = new Function('yield,data', `return \`${html}\`;`);
           for (const element of elements) {
             element.innerHTML = renderHTML(element.innerHTML, data);
           }

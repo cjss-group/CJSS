@@ -1,13 +1,14 @@
 nav {
   --data:(
-    links: ['one', 'two', 'three'],
+    name: ["one", "two", "three"],
+    link: ["#one", "#two", "#three"],
   );
   --html:(
-    <h3>${yield}</h3>
-    <div class="item">${data.links[0]}</div>
-    <div class="item">${data.links[1]}</div>
-    <div class="item">${data.links[2]}</div>
+    <a class="item" href="${data.link[0]}">${data.name[0]}</a>
+    <a class="item" href="${data.link[1]}">${data.name[1]}</a>
+    <a class="item" href="${data.link[2]}">${data.name[2]}</a>
   );
+  --js:(console.log(data));
 }
 
 nav .item {

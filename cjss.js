@@ -11,6 +11,20 @@
   }
 
   /**
+   * Evaluate a string containing JavaScript.
+   * @param code The JavaScript code.
+   * @param _this The "this" variable inside the script. Set it to null for global scope.
+   * @param variables Local variables. Type [Object]. Keys and values correspond to the variable names and values.
+   */
+  function safeEval(code, _this = {}, variables = {}) {
+    const argumentNames = Object.keys(variables);
+    const argumentValues = Object.values(variables);
+
+    const fn = new Function(...argumentNames, code);
+    return fn.apply(_this, argumentValues);
+  }
+
+  /**
    * Runs CJSS rules - CSS rules with the special properties --html, --js and --data.
    * @param rules An array of CJSS rules.
    **/
@@ -33,27 +47,29 @@
         let data = getPureProperty(rule, '--data');
 
         if (data) {
-          data = eval(`({ ${ data } })`);
+          data = safeEval(`return ({ ${ data } })`);
         }
 
         if (html) {
           for (let element of elements) {
             const yield = element.innerHTML;
 
-            // eval could be removed with a "shallow parser".
-            element.innerHTML = eval(`\`${ html }\``);
+            element.innerHTML = safeEval(
+              `return (\`${ html }\`)`,
+              element,
+              { data, yield }
+            );
           }
         }
 
         if (js) {
           if (selector === 'script') {
-            eval(js);
+            safeEval(js, null, { data });
             continue;
           }
 
           for (let element of elements) {
-            const fn = new Function(js);
-            fn.call(element);
+            safeEval(js, element, { data });
           }
         }
       }

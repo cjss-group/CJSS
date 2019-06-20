@@ -52,8 +52,10 @@
           }
 
           // There is a lot of room for optimization here.
-          for (let n = 0; n < elements.length; n++) {
-            eval(js.replace(/this/g, `document.querySelectorAll('${ selector }')[${ n }]`));
+          // for (let n = 0; n < elements.length; n++) {
+          for (let element of elements) {
+            const fn = new Function(js);
+            fn.call(element);
           }
         }
       }

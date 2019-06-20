@@ -46,8 +46,7 @@
         const html = getPureProperty(rule, '--html');
         const rawData = getPureProperty(rule, '--data');
 
-        const data = rawData ? (0, eval)(`({ ${rawData} })`) : {};
-
+        const data = rawData ? JSON.parse(`{ ${rawData} }`) : {};
         if (html) {
           const renderHTML = new Function('yield,data',`return \`${html}\`;`);
           for (const element of elements) {

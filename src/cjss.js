@@ -1,5 +1,5 @@
 import getPureProperty from './getPureProperty';
-import safeEval from './safeEval';
+import functionFromString from './functionFromString';
 import ruleList from './ruleList';
 
 /**
@@ -17,10 +17,10 @@ function processRule(rule) {
   let data = getPureProperty(rule, '--data');
 
   try {
-    data = data ? JSON.parse(`{${data}}`) : {};
+    data = JSON.parse(`{${ data }}`);
   } catch (e) {
     if (e instanceof SyntaxError) {
-      console.error(`CJSS: Invalid JSON found at ${selector}: {${data}}`);
+      console.error(`CJSS: Invalid JSON found at ${ selector }: {${ data }}`);
       console.error(e.message);
       return false;
     } else throw e;
@@ -28,41 +28,42 @@ function processRule(rule) {
 
   if (html) {
     for (const element of elements) {
-      try{
-        element.innerHTML = safeEval(
-          `return (\`${ html }\`)`,
-          {
-            data,
-            yield: element.innerHTML
-          },
-          element
-        );
+      const code = `return (\`${ html }\`)`;
+      const render = functionFromString(code, ['data', 'yield']);
+
+      try {
+        element.innerHTML = render.run([data, element.innerHTML]);
       } catch (e) {
         console.error('CJSS: Error in HTML:', e);
-        console.error(`at selector '${selector}' and element`, element);
-        console.error(`of script:\n${js}`);
+        console.error(`at selector '${ selector }' and element`, element);
+        console.error(`of script:\n${ js }`);
         return;
       }
     }
   }
 
   if (js) {
+    const jsRunner = functionFromString(js, ["data"]);
+
     if (selector === 'script') {
       try {
-        safeEval(js, { data });
+        jsRunner.run([data]);
       } catch (e) {
         console.error('CJSS: Error in JS:', e);
-        console.error(`at selector '${selector}'`);
-        console.error(`of script:\n${js}`);
-        return;
+        console.error(`at selector '${ selector }'`);
+        console.error(`of script:\n${ js }`);
       }
-    } else for (const element of elements) {
+
+      return;
+    }
+
+    for (const element of elements) {
       try {
-        safeEval(js, { data }, element);
+        jsRunner.run([data], element);
       } catch (e) {
         console.error('CJSS: Error in JS:', e);
-        console.error(`at selector '${selector}' and element`, element);
-        console.error(`of script:\n${js}`);
+        console.error(`at selector '${ selector }' and element`, element);
+        console.error(`of script:\n${ js }`);
         return;
       }
     }
@@ -70,13 +71,14 @@ function processRule(rule) {
 }
 
 /**
-   * Runs CJSS rules - CSS rules with the special properties `--html`,
-   * `--js` and `--data`.
-   *
-   * @param {CSSStyleSheet} styleSheet The stylesheet from which to run the rules.
-   */
+ * Runs CJSS rules - CSS rules with the special properties `--html`,
+ * `--js` and `--data`.
+ *
+ * @param {CSSStyleSheet} styleSheet The stylesheet from which to run the rules.
+ */
 export default function cjss(styleSheet) {
   const rules = ruleList(styleSheet);
+
   if (rules) for (const rule of rules) {
     const ruleName = rule.constructor.name;
 

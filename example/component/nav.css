@@ -3,16 +3,21 @@ nav {
     "name": ["one", "two", "three"],
     "link": ["#one", "#two", "#three"]
   );
+
   --html:(
     <a class="item" href="${data.link[0]}">${data.name[0]}</a>
     <a class="item" href="${data.link[1]}">${data.name[1]}</a>
     <a class="item" href="${data.link[2]}">${data.name[2]}</a>
   );
-  --js:(console.log(data));
+
+  --js:(
+    console.log(this, data)
+  );
 }
 
 nav .item {
   cursor: pointer;
+
   --js:(
     function toggle() {
       this.classList.toggle('active');
@@ -21,6 +26,7 @@ nav .item {
     this.addEventListener('click', toggle);
   );
 }
+
 nav .item.active {
   color: red;
 }

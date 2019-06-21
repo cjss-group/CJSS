@@ -20,7 +20,11 @@
    * @returns {CSSRuleList} The rules of this stylesheet.
    */
   function ruleList(styleSheet) {
-    return styleSheet.rules || styleSheet.cssRules;
+    try {
+      return styleSheet.rules || styleSheet.cssRules;
+    } catch (e) {
+      if (e.name !== "SecurityError") throw e;
+    }
   }
 
   /**
@@ -44,10 +48,11 @@
    * Runs CJSS rules - CSS rules with the special properties `--html`,
    * `--js` and `--data`.
    * 
-   * @param {CSSRuleList} rules An array-like object of CJSS rules.
+   * @param {CSSStyleSheet} rules The stylesheet from which to run the rules.
    **/
-  function cjss(rules) {
-    for (const rule of rules) {
+  function cjss(styleSheet) {
+    const rules = ruleList(styleSheet) || [];
+    for (const rule of rules || []) {
 
       // Handle imports recursively
       if (rule instanceof CSSImportRule) {
@@ -87,8 +92,7 @@
    */
   function initialize() {
     for (const sheet of document.styleSheets) {
-      const rules = ruleList(sheet);
-      if (rules) cjss(rules);
+      cjss(sheet);
     }
   }
   

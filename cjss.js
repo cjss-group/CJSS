@@ -3,8 +3,11 @@
 
   /**
    * Get value of a rule's property and remove surrounding parentheses.
-   * @param rule The CSSStyleRule, which to select from.
-   * @param propertyName The name/key which to select.
+   * 
+   * @param {CSSStyleRule} rule The CSSStyleRule, which to select from.
+   * @param {String} propertyName The name/key which to select.
+   * @returns {String} The contents of the given property, or empty if no
+   *   such rule exists.
    **/
   function getPureProperty(rule, propertyName) {
     const raw = rule.style.getPropertyValue(propertyName);
@@ -13,34 +16,46 @@
 
   /**
    * Evaluate a string containing JavaScript.
-   * @param code The JavaScript code.
-   * @param variables Local variables. Type [Object]. Keys and values correspond to the variable names and values.
-   * @param _this The "this" variable inside the script. null indicates global scope.
+   * @param {string} code The JavaScript code block to execute.
+   * @param {Object} variables Variables to pass through to the code block.
+   * @param {any} context The `this` variable inside the code block. Omit for global scope.
    */
-  function safeEval(code, variables = {}, _this = null) {
+  function safeEval(code, variables = {}, context = null) {
     const argumentNames = Object.keys(variables);
     const argumentValues = Object.values(variables);
 
     const fn = new Function(...argumentNames, code);
-    return fn.apply(_this, argumentValues);
+    return fn.apply(context, argumentValues);
   }
 
   /**
-   * Runs CJSS rules - CSS rules with the special properties --html, --js and --data.
-   * @param rules An array of CJSS rules.
-   **/
-  function cjss(rules) {
-    for (let rule of rules) {
+   * Get the rule list for a given stylesheet
+   * 
+   * @param {CSSStyleSheet} styleSheet The stylesheet to get the rules from.
+   * @returns {CSSRuleList} The rules of this stylesheet.
+   */
+  function ruleList(styleSheet) {
+    try {
+      return styleSheet.rules || styleSheet.cssRules;
+    } catch (e) {
+      if (e.name !== "SecurityError") throw e;
+    }
+  }
+
+  /**
+   * Runs CJSS rules - CSS rules with the special properties `--html`,
+   * `--js` and `--data`.
+   * 
+   * @param {CSSStyleSheet} styleSheet The stylesheet from which to run the rules.
+   */
+  function cjss(styleSheet) {
+    const rules = ruleList(styleSheet);
+    if (rules) for (let rule of rules) {
       const ruleName = rule.constructor.name;
 
       // Handle imports (recursive)
       if (ruleName === 'CSSImportRule') {
-        try {
-          const importedRules = rule.styleSheet.cssRules;
-          if (importedRules) cjss(importedRules);
-        } catch (e) {
-          if (e.name !== "SecurityError") throw e;
-        }
+        cjss(rule.styleSheet);
       }
 
       else if (ruleName === 'CSSStyleRule') {
@@ -82,14 +97,11 @@
   }
 
   /**
-   * Plug every stylesheet in the document into the cjss function.
+   * Run the CJSS script for every stylesheet in the file.
    */
   function initialize() {
     for (let sheet of document.styleSheets) {
-      const rules = sheet.rules || sheet.cssRules;
-
-      if (!rules || !rules.length) continue;
-      cjss(rules);
+      cjss(sheet);
     }
   }
 

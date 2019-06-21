@@ -6,6 +6,7 @@ import ruleList from './ruleList';
  * Run one CJSS rule, handling the properties `--html`, `--js` and `--data`.
  *
  * @param {CSSRule} rule The rule to parse.
+ * @returns {Boolean} Whether the operation was successful.
  */
 function processRule(rule) {
   const selector = rule.style.parentRule.selectorText;
@@ -15,26 +16,52 @@ function processRule(rule) {
   const html = getPureProperty(rule, '--html');
   let data = getPureProperty(rule, '--data');
 
-  data = data ? JSON.parse(`{${data}}`) : {};
+  try {
+    data = data ? JSON.parse(`{${data}}`) : {};
+  } catch (e) {
+    if (e instanceof SyntaxError) {
+      console.error(`Invalid JSON found at ${selector}: {\n${data}\n}`);
+      return false;
+    } else throw e;
+  }
 
   if (html) {
     for (let element of elements) {
-      element.innerHTML = safeEval(
-        `return (\`${ html }\`)`,
-        {
-          data,
-          yield: element.innerHTML
-        },
-        element
-      );
+      try{
+        element.innerHTML = safeEval(
+          `return (\`${ html }\`)`,
+          {
+            data,
+            yield: element.innerHTML
+          },
+          element
+        );
+      } catch (e) {
+        console.error(e);
+        return;
+      }
     }
   }
 
   if (js) {
     if (selector === 'script') {
-      safeEval(js, { data });
+      try {
+        safeEval(js, { data });
+      } catch (e) {
+        console.error('Error in JS:', e);
+        console.error(`at selector '${selector}'`);
+        console.error(`of script:\n${js}`);
+        return;
+      }
     } else for (let element of elements) {
-      safeEval(js, { data }, element);
+      try {
+        safeEval(js, { data }, element);
+      } catch (e) {
+        console.error('Error in JS:', e);
+        console.error(`at selector '${selector}' and element`, element);
+        console.error(`of script:\n${js}`);
+        return;
+      }
     }
   }
 }

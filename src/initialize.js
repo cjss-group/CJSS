@@ -1,13 +1,10 @@
 import cjss from './cjss';
 
 /**
- * Plug every stylesheet in the document into the cjss function.
+ * Run the CJSS script for every stylesheet in the file.
  */
 export default function initialize() {
   for (let sheet of document.styleSheets) {
-    const rules = sheet.rules || sheet.cssRules;
-
-    if (!rules || !rules.length) continue;
-    cjss(rules);
+    cjss(sheet);
   }
 }

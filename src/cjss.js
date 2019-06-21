@@ -1,22 +1,21 @@
 import getPureProperty from './getPureProperty';
 import safeEval from './safeEval';
+import ruleList from './ruleList';
 
 /**
- * Runs CJSS rules - CSS rules with the special properties --html, --js and --data.
- * @param rules An array of CJSS rules.
- **/
-export default function cjss(rules) {
-  for (let rule of rules) {
+   * Runs CJSS rules - CSS rules with the special properties `--html`,
+   * `--js` and `--data`.
+   *
+   * @param {CSSStyleSheet} styleSheet The stylesheet from which to run the rules.
+   */
+export default function cjss(styleSheet) {
+  const rules = ruleList(styleSheet);
+  if (rules) for (let rule of rules) {
     const ruleName = rule.constructor.name;
 
     // Handle imports (recursive)
     if (ruleName === 'CSSImportRule') {
-      try {
-        const importedRules = rule.styleSheet.cssRules;
-        if (importedRules) cjss(importedRules);
-      } catch (e) {
-        if (e.name !== "SecurityError") throw e;
-      }
+      cjss(rule.styleSheet);
     }
 
     else if (ruleName === 'CSSStyleRule') {

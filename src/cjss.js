@@ -22,13 +22,11 @@ export default function cjss(styleSheet) {
       const selector = rule.style.parentRule.selectorText;
       const elements = document.querySelectorAll(selector);
 
-      let js = getPureProperty(rule, '--js');
-      let html = getPureProperty(rule, '--html');
+      const js = getPureProperty(rule, '--js');
+      const html = getPureProperty(rule, '--html');
       let data = getPureProperty(rule, '--data');
 
-      if (data) {
-        data = safeEval(`return ({ ${ data } })`);
-      }
+      data = data ? JSON.parse(`{${data}}`) : {};
 
       if (html) {
         for (let element of elements) {

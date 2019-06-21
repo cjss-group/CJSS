@@ -9,6 +9,6 @@ body {
     <nav>Title</nav>
   );
   --data:(
-    name:'world',
+    "name": "world"
   );
 }

@@ -27,7 +27,7 @@ function processRule(rule) {
   }
 
   if (html) {
-    for (let element of elements) {
+    for (const element of elements) {
       try{
         element.innerHTML = safeEval(
           `return (\`${ html }\`)`,
@@ -56,7 +56,7 @@ function processRule(rule) {
         console.error(`of script:\n${js}`);
         return;
       }
-    } else for (let element of elements) {
+    } else for (const element of elements) {
       try {
         safeEval(js, { data }, element);
       } catch (e) {
@@ -77,7 +77,7 @@ function processRule(rule) {
    */
 export default function cjss(styleSheet) {
   const rules = ruleList(styleSheet);
-  if (rules) for (let rule of rules) {
+  if (rules) for (const rule of rules) {
     const ruleName = rule.constructor.name;
 
     // Handle imports (recursive)

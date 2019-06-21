@@ -17,44 +17,45 @@ function processRule(rule) {
   let data = getPureProperty(rule, '--data');
 
   try {
-    data = JSON.parse(`{${ data }}`);
+    data = JSON.parse(`{${data}}`);
   } catch (e) {
     if (e instanceof SyntaxError) {
-      console.error(`CJSS: Invalid JSON found at ${ selector }: {${ data }}`);
+      console.error(`CJSS: Invalid JSON found at ${selector}: {${data}}`);
       console.error(e.message);
       return false;
-    } else throw e;
+    } throw e;
   }
 
   if (html) {
     for (const element of elements) {
-      const code = `return (\`${ html }\`)`;
+      const code = `return (\`${html}\`)`;
       const render = functionFromString(code, ['data', 'yield']);
 
       try {
         element.innerHTML = render.run([data, element.innerHTML]);
       } catch (e) {
         console.error('CJSS: Error in HTML:', e);
-        console.error(`at selector '${ selector }' and element`, element);
-        console.error(`of script:\n${ js }`);
-        return;
+        console.error(`at selector '${selector}' and element`, element);
+        console.error(`of script:\n${js}`);
+        return false;
       }
     }
   }
 
   if (js) {
-    const jsRunner = functionFromString(js, ["data"]);
+    const jsRunner = functionFromString(js, ['data']);
 
     if (selector === 'script') {
       try {
         jsRunner.run([data]);
       } catch (e) {
         console.error('CJSS: Error in JS:', e);
-        console.error(`at selector '${ selector }'`);
-        console.error(`of script:\n${ js }`);
+        console.error(`at selector '${selector}'`);
+        console.error(`of script:\n${js}`);
+        return false;
       }
 
-      return;
+      return true;
     }
 
     for (const element of elements) {
@@ -62,12 +63,13 @@ function processRule(rule) {
         jsRunner.run([data], element);
       } catch (e) {
         console.error('CJSS: Error in JS:', e);
-        console.error(`at selector '${ selector }' and element`, element);
-        console.error(`of script:\n${ js }`);
-        return;
+        console.error(`at selector '${selector}' and element`, element);
+        console.error(`of script:\n${js}`);
+        return false;
       }
     }
   }
+  return true;
 }
 
 /**
@@ -79,15 +81,11 @@ function processRule(rule) {
 export default function cjss(styleSheet) {
   const rules = ruleList(styleSheet);
 
-  if (rules) for (const rule of rules) {
-    const ruleName = rule.constructor.name;
-
-    // Handle imports (recursive)
-    if (ruleName === 'CSSImportRule') {
+  for (const rule of rules) {
+    if (rule instanceof CSSImportRule) {
+      // Handle imports recursively
       cjss(rule.styleSheet);
-    }
-
-    else if (ruleName === 'CSSStyleRule') {
+    } else if (rule instanceof CSSStyleRule) {
       processRule(rule);
     }
   }

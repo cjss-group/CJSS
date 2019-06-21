@@ -1,7 +1,9 @@
 import initialize from './initialize';
 import cjss from './cjss';
 
-document.addEventListener('DOMContentLoaded', initialize);
+if (['complete','interactive','loaded'].includes(document.readyState)) {
+  initialize();
+} else document.addEventListener('DOMContentLoaded', initialize);
 
 export default {
   render: cjss  // This can be globally accessed via cjss.render()

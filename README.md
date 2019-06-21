@@ -72,8 +72,8 @@ You can add data to your project. Probably useful for something. Do it using the
 ```css
 nav {
   --data:(
-    name: ['one', 'two', 'three'],
-    link: ['#one', '#two', '#three'],
+    "name": ["one", "two", "three"],
+    "link": ["#one", "#two", "#three"]
   );
   --html:(
     <a class="item" href="${data.link[0]}">${data.name[0]}</a>

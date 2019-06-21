@@ -1,0 +1,34 @@
+{
+  "name": "cjss",
+  "version": "1.0.0",
+  "description": "A CSS based web framework",
+  "main": "cjss.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scottkellum/CJSS.git"
+  },
+  "keywords": [
+    "css",
+    "cjss",
+    "web",
+    "framework"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/scottkellum/CJSS/issues"
+  },
+  "homepage": "https://github.com/scottkellum/CJSS#readme",
+  "devDependencies": {
+    "rollup": "^1.15.6",
+    "rollup-plugin-terser": "^5.0.0"
+  }
+}

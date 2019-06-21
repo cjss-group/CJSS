@@ -4,7 +4,10 @@
 
 ##### Also, don’t use this project, especially not for anything serious. This is a joke and thought experiment. I won’t help you work through bugs.
 
-To install CJSS, add the [JavaScript](https://github.com/scottkellum/CJSS/blob/master/cjss.js) to your website.
+To install CJSS, add the [JavaScript](https://github.com/scottkellum/CJSS/blob/master/dist/cjss.min.js) to your website.
+
+To build it, run `npm run build`.
+Run `npm run dev` for development (watch files).
 
 ### Using CJSS
 

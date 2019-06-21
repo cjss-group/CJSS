@@ -26,21 +26,31 @@
   }
 
   /**
+   * Get the rule list for a given stylesheet
+   * 
+   * @param styleSheet The stylesheet to get the rules from.
+   * @returns The rules of this stylesheet.
+   */
+  function ruleList(styleSheet) {
+    try {
+      return styleSheet.rules || styleSheet.cssRules;
+    } catch (e) {
+      if (e.name !== "SecurityError") throw e;
+    }
+  }
+
+  /**
    * Runs CJSS rules - CSS rules with the special properties --html, --js and --data.
    * @param rules An array of CJSS rules.
    **/
-  function cjss(rules) {
-    for (let rule of rules) {
+  function cjss(styleSheet) {
+    const rules = ruleList(styleSheet);
+    if (rules) for (let rule of rules) {
       const ruleName = rule.constructor.name;
 
       // Handle imports (recursive)
       if (ruleName === 'CSSImportRule') {
-        try {
-          const importedRules = rule.styleSheet.cssRules;
-          if (importedRules) cjss(importedRules);
-        } catch (e) {
-          if (e.name !== "SecurityError") throw e;
-        }
+        cjss(rule.styleSheet);
       }
 
       else if (ruleName === 'CSSStyleRule') {
@@ -86,10 +96,7 @@
    */
   function initialize() {
     for (let sheet of document.styleSheets) {
-      const rules = sheet.rules || sheet.cssRules;
-
-      if (!rules || !rules.length) continue;
-      cjss(rules);
+      cjss(sheet);
     }
   }
 

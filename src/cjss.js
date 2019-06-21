@@ -1,5 +1,5 @@
 import getPureProperty from './getPureProperty';
-import safeEval from './safeEval';
+import prepareFunction from './prepareFunction';
 import ruleList from './ruleList';
 
 /**
@@ -47,9 +47,10 @@ function processRule(rule) {
   }
 
   if (js) {
+    const runJS = prepareFunction(js, ["data"]);
     if (selector === 'script') {
       try {
-        safeEval(js, { data });
+        runJS({ data });
       } catch (e) {
         console.error('CJSS: Error in JS:', e);
         console.error(`at selector '${selector}'`);
@@ -58,7 +59,7 @@ function processRule(rule) {
       }
     } else for (const element of elements) {
       try {
-        safeEval(js, { data }, element);
+        runJS({ data }, element);
       } catch (e) {
         console.error('CJSS: Error in JS:', e);
         console.error(`at selector '${selector}' and element`, element);

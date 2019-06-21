@@ -1,18 +1,15 @@
 language: node_js
-
 node_js:
-  - "7"
-
-cache:
-  directories:
-    - node_modules
-
-before _script:
-  - npm install
-
-script:
-  - "npm run build"
-
+  - '5'
+  - '4'
+after_success:
+  - npm run build
+before_deploy:
+  - cd dist
 deploy:
+  provider: npm
   skip_cleanup: true
-  local_dir: dist
+  on:
+    branch: master
+    tags: true
+    repo: kargjonas/CJSS

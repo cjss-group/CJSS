@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - '7'
+
+  after_success:
+  - npm run build
+before_deploy:
+  - cd dist
+deploy:
+  provider: npm
+  skip_cleanup: true
+  on:
+    branch: master
+    tags: true
+    repo: kargjonas/CJSS

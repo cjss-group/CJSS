@@ -1,4 +1,4 @@
-import {terser} from 'rollup-plugin-terser';
+import { terser } from 'rollup-plugin-terser';
 
 export default {
   input: './src/index.js',
@@ -7,13 +7,13 @@ export default {
     {
       file: './dist/cjss.min.js',
       format: 'iife',
-      name: 'cjss'
+      name: 'cjss',
     },
     {
       file: './dist/cjss.js',
       format: 'iife',
       name: 'cjss',
-      sourcemap: 'inline'
-    }
-  ]
+      sourcemap: 'inline',
+    },
+  ],
 };

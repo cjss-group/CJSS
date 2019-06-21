@@ -9,7 +9,7 @@ deploy:
   provider: releases
   api_key: $GH_KEY
   file:
-    - "dist/cjss.min.js"
+    - "dist/*.js"
   skip_cleanup: true
   on:
     tags: true

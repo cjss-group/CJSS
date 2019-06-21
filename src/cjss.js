@@ -20,7 +20,8 @@ function processRule(rule) {
     data = data ? JSON.parse(`{${data}}`) : {};
   } catch (e) {
     if (e instanceof SyntaxError) {
-      console.error(`Invalid JSON found at ${selector}: {\n${data}\n}`);
+      console.error(`CJSS: Invalid JSON found at ${selector}: {${data}}`);
+      console.error(e.message);
       return false;
     } else throw e;
   }
@@ -37,7 +38,9 @@ function processRule(rule) {
           element
         );
       } catch (e) {
-        console.error(e);
+        console.error('CJSS: Error in HTML:', e);
+        console.error(`at selector '${selector}' and element`, element);
+        console.error(`of script:\n${js}`);
         return;
       }
     }
@@ -48,7 +51,7 @@ function processRule(rule) {
       try {
         safeEval(js, { data });
       } catch (e) {
-        console.error('Error in JS:', e);
+        console.error('CJSS: Error in JS:', e);
         console.error(`at selector '${selector}'`);
         console.error(`of script:\n${js}`);
         return;
@@ -57,7 +60,7 @@ function processRule(rule) {
       try {
         safeEval(js, { data }, element);
       } catch (e) {
-        console.error('Error in JS:', e);
+        console.error('CJSS: Error in JS:', e);
         console.error(`at selector '${selector}' and element`, element);
         console.error(`of script:\n${js}`);
         return;

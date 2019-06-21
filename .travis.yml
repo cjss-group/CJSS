@@ -3,3 +3,13 @@ node_js: node
 
 script:
 - npm run eslint
+- npm run build
+
+deploy:
+  provider: releases
+  api_key: $GH_KEY
+  file:
+    - "dist/cjss.min.js"
+  skip_cleanup: true
+  on:
+    tags: true

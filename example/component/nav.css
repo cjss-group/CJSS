@@ -1,8 +1,8 @@
 nav {
-  --data: json(
+  --data: json({
     "name": ["one", "two", "three"],
     "link": ["#one", "#two", "#three"]
-  );
+  });
 
   --prepare: js(
     data.link = data.name.map(name=>`#${name}-${Math.random()}`);

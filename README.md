@@ -71,10 +71,10 @@ You can add data to your project. This is probably useful for something. Do it u
 
 ```css
 nav {
-  --data: json(
+  --data: json({
     "name": ["one", "two", "three"],
     "link": ["#one", "#two", "#three"]
-  );
+  });
   --body: html(
     <a class="item" href="${data.link[0]}">${data.name[0]}</a>
     <a class="item" href="${data.link[1]}">${data.name[1]}</a>
@@ -100,13 +100,12 @@ This can only be used for the *body* stage. The code given will be treated as a 
 
 You have access to the variables `data` (as set in previous build steps) and `yield` (the HTML code of the contents). Note that this mode will destroy any event listeners previously bound to the children of the element.
 
-#### `javascript`, `json`, `jso`
+#### `javascript`, `json`
 
-JavaScript: for any stage. There are three modes: `js`, `js-expr` and `jso`.
+JavaScript: for any stage. There are two modes: `js` and `js-expr`.
 
-- `js` is the most flexible, as the contents are evaluated as a block.
+- `js` evaluates as a block of code, and so return values need the return keyword.
 - `js-expr` evaluates as a single expression.
-- `jso` provides compatibility with the JSON mode: its contents are wrapped in curly braces, to produce a JavaScript object. This only works for the data stage.
 
 You always have access to the variable `data` (as set in previous build steps), and during the body stage you also have `yield` (an array of node contents). This means that events and other properties remain bound, unlike in HTML, which goes via innerHTML.
 

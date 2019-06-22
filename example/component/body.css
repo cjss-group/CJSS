@@ -8,7 +8,7 @@ body {
     <p>click the items below to toggle.</p>
     <nav>Title</nav>
   );
-  --data: jso(
+  --data: js-expr({
     name: 'world',
-  );
+  });
 }

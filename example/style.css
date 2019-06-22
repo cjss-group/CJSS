@@ -3,9 +3,9 @@
 
 /* Run a script */
 script {
-  --data: json(
+  --data: json({
     "say": "Hello world!"
-  );
+  });
   --script: js(
     console.log(data.say);
   );

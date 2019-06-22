@@ -3,10 +3,10 @@
 
 /* Run a script */
 script {
-  --data:(
+  --data: json({
     "say": "Hello world!"
-  );
-  --js:(
+  });
+  --script: js(
     console.log(data.say);
   );
 }

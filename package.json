@@ -9,6 +9,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
+    "lint": "eslint src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -28,6 +29,10 @@
   },
   "homepage": "https://github.com/scottkellum/CJSS#readme",
   "devDependencies": {
+    "babel-eslint": "^10.0.2",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3",
     "rollup": "^1.15.6",
     "rollup-plugin-terser": "^5.0.0"
   }

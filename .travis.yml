@@ -10,6 +10,7 @@ deploy:
     skip_cleanup: true
     github_token: $GH_KEY # Set in the settings page of your repository as a secure variable
     keep_history: true
+    committer_from_gh: true
     local_dir: ./demo
     on:
       branch: master

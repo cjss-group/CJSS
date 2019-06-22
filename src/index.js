@@ -1,6 +1,7 @@
 import initialize from './initialize';
 import cjss from './cjss';
 import './defaultPlugins';
+import registerPlugin from './registerPlugin';
 
 if (['complete', 'interactive', 'loaded'].includes(document.readyState)) {
   initialize();

@@ -9,5 +9,5 @@ if (['complete', 'interactive', 'loaded'].includes(document.readyState)) {
 export default {
   // This can be globally accessed via cjss.render()
   render: cjss,
-  // This is also where cjss.registerPlugin() will likely go.
+  registerPlugin,
 };

@@ -107,14 +107,14 @@ const javascriptPlugin = (isBody, jsTransformer = x => x) => (js) => {
  * steps), and during the body stage you also have `yield` (an array of node
  * contents). This means that events and other properties remain bound, unlike
  * in HTML, which goes via innerHTML.
- * 
+ *
  * In the body stage, the return value is used to replace the contents of the
  * element. If the return value is undefined, no changes are made, otherwise
  * the existing contents are removed. If a string is provided, it is parsed as
  * HTML. If a node is returned, it is added directly as the only child. If an
  * array is returned, its elements are recursively added as nodes or text
  * nodes.
- * 
+ *
  * In any other stage, the return value is assigned as `data` for the use of
  * the future build phases. If no object is returned, the `value` of data is
  * not updated.

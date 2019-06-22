@@ -1,0 +1,35 @@
+@import url('buttons.css');
+
+.downloads {
+  display: flex;
+  justify-content: center;
+  --data: js-expr(
+    JSON.parse(this.dataset.links)
+  );
+
+  --prepare: js(
+    this.classList.add('buttons');
+  );
+
+  --body: js-expr(
+    data.map(({ title, name }) => `
+      <a href="dist/${name}" download="${name}">${title} (<code>${name}</code>)</a>
+    `).join('')
+  );
+}
+
+.downloads > * {
+  --script: js(
+    function toggle() {
+      this.classList.toggle('active');
+    }
+
+    this.addEventListener('click', toggle);
+  );
+}
+
+.downloads > :hover {
+  outline: none;
+  text-shadow: 0 0 5px white;
+  box-shadow: 0 0 5px white;
+}

@@ -1,17 +1,18 @@
-nav {
-  display: flex;
-  justify-content: center;
+@import url('buttons.css');
+
+.click-demo {
   --data: json({
     "name": ["one", "two", "three"]
   });
 
   --prepare: js(
+    this.classList.add('buttons');
     data.link = data.name.map((name, index) => (`#${name}-${index + 1}`));
   );
 
   --body: js-expr(
     [0, 1, 2].map(i => `
-      <a class="item" href="${data.link[i]}">${data.name[i]}</a>
+      <a href="${data.link[i]}">${data.name[i]}</a>
     `).join('')
   );
 
@@ -20,15 +21,7 @@ nav {
   );
 }
 
-nav .item {
-  padding: 0.3em 0.5em;
-  margin: 0 0.3em;
-  color: white;
-  text-decoration: none;
-  font-size: 1.2em;
-  border-radius: 0.2em;
-  box-shadow: 0 0 0 1px white;
-
+.click-demo > * {
   --script: js(
     function toggle() {
       this.classList.toggle('active');
@@ -38,7 +31,7 @@ nav .item {
   );
 }
 
-nav .item.active {
+.click-demo > .active {
   outline: none;
   text-shadow: 0 0 5px white;
   box-shadow: 0 0 5px white;

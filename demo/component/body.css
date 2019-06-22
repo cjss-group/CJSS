@@ -13,7 +13,9 @@ body {
       <h2>This page was constructed entirely within CSS files. That includes all the data, markup, scripts, and also styles.</h2>
 
       <h3>Click the items below to toggle.</h3>
-      <nav>Title</nav>
+      <nav class="click-demo">{nav}</nav>
+      <h3>Download CJSS for your own project (please don’t!)</h3>
+      <nav class="downloads" data-links="[{&quot;title&quot;: &quot;Development version&quot;, &quot;name&quot;: &quot;cjss.js&quot;}, {&quot;title&quot;: &quot;Minified version&quot;, &quot;name&quot;: &quot;cjss.min.js&quot;}]">Title</nav>
     </div>
   );
 

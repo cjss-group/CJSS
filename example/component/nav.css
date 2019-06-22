@@ -1,7 +1,6 @@
 nav {
   --data: json({
-    "name": ["one", "two", "three"],
-    "link": [] /* This array is filled with content in --prepare */
+    "name": ["one", "two", "three"]
   });
 
   --prepare: js(

@@ -11,8 +11,6 @@
     "dev": "rollup -c -w",
     "eslint": "eslint src",
     "tidy": "eslint --fix src",
-    "install-jekyll": "cd demo && bundle install",
-    "jekyll": "cd demo && bundle exec jekyll serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

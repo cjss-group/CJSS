@@ -16,6 +16,8 @@ To install CJSS, add the [JavaScript](https://github.com/scottkellum/CJSS/blob/m
 
 Your editor probably has [a plugin](https://eslint.org/docs/user-guide/integrations) for automatically linting as you type.
 
+The demo website can be built by leaving `npm run dev` running, and opening `demo/index.html` in your web browser.
+
 ## Using CJSS
 
 First off, everything happens in your CSS file. You can layer this into your websites as you see fit. You can use this to layer on just a little bit more functionality in your CSS here and there or construct an entire page. It’s up to you!

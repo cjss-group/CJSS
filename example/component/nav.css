@@ -1,7 +1,8 @@
 nav {
+  display: flex;
+  justify-content: center;
   --data: json({
-    "name": ["one", "two", "three"],
-    "link": [] /* This array is filled with content in --prepare */
+    "name": ["one", "two", "three"]
   });
 
   --prepare: js(
@@ -20,13 +21,12 @@ nav {
 }
 
 nav .item {
-  cursor: pointer;
-  padding: 6px 8px;
-  margin: 0 5px;
+  padding: 0.3em 0.5em;
+  margin: 0 0.3em;
   color: white;
   text-decoration: none;
-  font-size: 21px;
-  border-radius: 3px;
+  font-size: 1.2em;
+  border-radius: 0.2em;
   box-shadow: 0 0 0 1px white;
 
   --script: js(

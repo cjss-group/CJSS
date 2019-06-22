@@ -8,6 +8,8 @@ import CJSSError from './CJSSError';
  * Run one CJSS rule, handling the properties `--html`, `--js` and `--data`.
  *
  * @param {CSSRule} rule The rule to parse.
+ * @returns {CompiledRule[]} Zero or one compiled rule, depending on whethere any CJSS code is
+ *   present.
  */
 function processRule(rule) {
   const selector = rule.style.parentRule.selectorText;

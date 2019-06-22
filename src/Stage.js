@@ -1,4 +1,4 @@
-/** @typedef {defaultMode?: String, fallback?: String} StageEntry */
+/** @typedef {{defaultMode?: String, fallback?: String}} StageEntry */
 
 /**
  * Prepare a stage enum element.

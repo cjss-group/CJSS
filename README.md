@@ -2,18 +2,25 @@
 
 ## A CSS based web framework
 
-##### Also, don’t use this project, especially not for anything serious. This is a joke and thought experiment. I won’t help you work through bugs.
+**Also, don’t use this project, especially not for anything serious. This is a joke and thought experiment. I won’t help you work through bugs.**
 
 To install CJSS, add the [JavaScript](https://github.com/scottkellum/CJSS/blob/master/dist/cjss.min.js) to your website.
 
-To build it, run `npm run build`.
-Run `npm run dev` for development (watch files).
+### Development
 
-### Introduction
+- `npm install`: Install the dependencies needed for the project
+- `npm run eslint`: Check code quality
+- `npm run fix`: Fix certain code issues automatically
+- `npm run build`: Compile the output file
+- `npm run dev`: Keep compiling the output file
+
+Your editor probably has [a plugin](https://eslint.org/docs/user-guide/integrations) for automatically linting as you type.
+
+## Using CJSS
 
 First off, everything happens in your CSS file. You can layer this into your websites as you see fit. You can use this to layer on just a little bit more functionality in your CSS here and there or construct an entire page. It’s up to you!
 
-#### HTML
+### HTML
 
 To add markup to an element, select it in your CSS file, then use `--body: html(your markup here);` to add your HTML. This markup will appear everywhere that matches your CSS selector and overwrite whatever was there before.
 
@@ -49,7 +56,7 @@ This will render as:
 </component>
 ```
 
-#### JavaScript
+### JavaScript
 
 You can use JavaScript to define the behavior of things right from your HTML. You want something to happen when you click on an element, but don’t want to go into your JS file? Do it right from your CSS file. If you are selecting the `script` element it will assume you are writing a global script, but everywhere else, the keyword `this` will map to the selector you are in.
 
@@ -65,7 +72,7 @@ You can use JavaScript to define the behavior of things right from your HTML. Yo
 }
 ```
 
-#### Data
+### Data
 
 You can add data to your project. This is probably useful for something. Do it using the `--data` attribute. It should be formatted as JSON.
 
@@ -113,7 +120,7 @@ In the body stage, the return value is used to replace the contents of the eleme
 
 In any other stage, the return value is assigned as `data` for the use of the future build phases. If no object is returned, the value of `data` is not updated.
 
-# Examples
+## Examples
 
 [What to watch carousel by Richard Ekwonye](https://codepen.io/ekwonye/full/QXEzZv)
 

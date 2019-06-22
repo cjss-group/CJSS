@@ -6,6 +6,8 @@
   },
   "rules": {
     "no-console": "off",
-    "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"]
+    "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],
+    "no-cond-assign": ["error", "except-parens"],
+    "no-param-reassign": ["error", { "props": false }]
   }
 }

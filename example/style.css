@@ -1,11 +1,12 @@
 @import url('component/body.css');
 @import url('component/nav.css');
 
-/* Run a script */
+/* Run a global script */
 script {
   --data: json({
     "say": "Hello world!"
   });
+
   --script: js(
     console.log(data.say);
   );

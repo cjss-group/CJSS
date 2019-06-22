@@ -1,15 +1,15 @@
 nav {
   --data: json({
     "name": ["one", "two", "three"],
-    "link": ["#one", "#two", "#three"]
+    "link": [] /* This array is filled with content in --prepare */
   });
 
   --prepare: js(
-    data.link = data.name.map(name=>`#${name}-${Math.random()}`);
+    data.link = data.name.map((name, index) => (`#${name}-${index + 1}`));
   );
 
   --body: js-expr(
-    [0,1,2].map(i => `
+    [0, 1, 2].map(i => `
       <a class="item" href="${data.link[i]}">${data.name[i]}</a>
     `).join('')
   );
@@ -21,6 +21,13 @@ nav {
 
 nav .item {
   cursor: pointer;
+  padding: 6px 8px;
+  margin: 0 5px;
+  color: white;
+  text-decoration: none;
+  font-size: 21px;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px white;
 
   --script: js(
     function toggle() {
@@ -32,5 +39,7 @@ nav .item {
 }
 
 nav .item.active {
-  color: red;
+  outline: none;
+  text-shadow: 0 0 5px white;
+  box-shadow: 0 0 5px white;
 }

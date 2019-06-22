@@ -1,15 +1,15 @@
 language: node_js
-node_js:
-  - '7'
+node_js: node
 
-  after_success:
+script:
+  - npm run eslint
   - npm run build
-before_deploy:
-  - cd dist
+
 deploy:
-  provider: npm
-  skip_cleanup: true
-  on:
-    branch: master
-    tags: true
-    repo: kargjonas/CJSS
+  - provider: pages
+    skip_cleanup: true
+    github_token: $GH_KEY # Set in the settings page of your repository as a secure variable
+    keep_history: true
+    local_dir: ./demo
+    on:
+      branch: landing-screen

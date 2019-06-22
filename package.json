@@ -9,7 +9,9 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "lint": "eslint src",
+    "eslint": "eslint src",
+    "install-jekyll": "cd demo && bundle install",
+    "jekyll": "cd demo && bundle exec jekyll serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

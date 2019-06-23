@@ -14,6 +14,7 @@ body {
 
       <h3>Click the items below to toggle.</h3>
       <nav>Title</nav>
+      <p><recursion data-depth="4"></recursion></p>
     </div>
   );
 
@@ -44,4 +45,20 @@ body h3 {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+}
+
+recursion {
+  border: 1.5px solid;
+  padding: 3px;
+  padding-left: 6px;
+  position: relative;
+  display: inline-block;
+  font-size: 0;
+
+  --data: js-expr({
+    depth: this.dataset.depth,
+  });
+  --body: js-expr(
+    data.depth > 0 ? `<recursion data-depth="${data.depth-1}"></recursion>` : ''
+  );
 }

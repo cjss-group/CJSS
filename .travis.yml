@@ -1,15 +1,15 @@
 language: node_js
-node_js:
-  - '7'
+node_js: node
 
-  after_success:
-  - npm run build
-before_deploy:
-  - cd dist
+script:
+- npm run eslint
+- npm run build
+
 deploy:
-  provider: npm
+  provider: releases
+  api_key: $GH_KEY
+  file:
+    - "dist/*.js"
   skip_cleanup: true
   on:
-    branch: master
     tags: true
-    repo: kargjonas/CJSS

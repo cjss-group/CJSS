@@ -9,7 +9,8 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "lint": "eslint src",
+    "eslint": "eslint src",
+    "tidy": "eslint --fix src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

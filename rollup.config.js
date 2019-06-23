@@ -4,7 +4,7 @@ export default [
   {
     input: './src/index.js',
     plugins: [],
-    output: [
+    output: {
       file: './demo/dist/cjss.js',
       format: 'iife',
       name: 'cjss',

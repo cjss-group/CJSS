@@ -8,12 +8,12 @@ body {
 
   /* Markup */
   --body: html(
-    <a href="https://github.com/scottkellum/CJSS/" class="github-link">
-      <span><code>scottkellum/CJSS</code></span>
+    <a href="https://github.com/cjss-group/CJSS/" class="github-link">
+      <span><code>cjss-group/CJSS</code></span>
       <img src="media/github.png" srcset="media/github@2x.png 2x, media/github@3x.png 3x">
     </a>
     <div class="spacer">
-      <article class="center">
+      <main class="center">
         <h1>Hello ${data.name}!</h1>
         <h2>This page was constructed entirely within CSS files. That includes all the data, markup, scripts, and also styles.</h2>
 
@@ -24,7 +24,8 @@ body {
             data-links="[{&quot;title&quot;: &quot;Development version&quot;, &quot;name&quot;: &quot;cjss.js&quot;}, {&quot;title&quot;: &quot;Minified version&quot;, &quot;name&quot;: &quot;cjss.min.js&quot;}]">
           Title
         </nav>
-      </article>
+        <p><recursion data-depth="4"></recursion></p>
+      </main>
     </div>
   );
 
@@ -94,4 +95,20 @@ body h3 {
 
 .center {
   text-align: center;
+}
+
+recursion {
+  border: 1.5px solid;
+  padding: 3px;
+  padding-left: 6px;
+  position: relative;
+  display: inline-block;
+  font-size: 0;
+
+  --data: js-expr({
+    depth: this.dataset.depth,
+  });
+  --body: js-expr(
+    data.depth > 0 ? `<recursion data-depth="${data.depth-1}"></recursion>` : ''
+  );
 }

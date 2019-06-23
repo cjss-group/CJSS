@@ -2,7 +2,8 @@
 
 .click-demo {
   --data: json({
-    "name": ["one", "two", "three"]
+    "name": ["one", "two", "three"],
+    "link": []
   });
 
   --prepare: js(

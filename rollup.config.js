@@ -5,23 +5,19 @@ export default [
     input: './src/index.js',
     plugins: [],
     output: [
-      {
-        file: './demo/dist/cjss.js',
-        format: 'iife',
-        name: 'cjss',
-        sourcemap: 'inline',
-      },
-    ],
+      file: './demo/dist/cjss.js',
+      format: 'iife',
+      name: 'cjss',
+      sourcemap: 'inline',
+    },
   },
   {
     input: './src/index.js',
     plugins: [terser()],
-    output: [
-      {
-        file: './demo/dist/cjss.min.js',
-        format: 'iife',
-        name: 'cjss',
-      },
-    ],
+    output: {
+      file: './demo/dist/cjss.min.js',
+      format: 'iife',
+      name: 'cjss',
+    },
   },
 ];

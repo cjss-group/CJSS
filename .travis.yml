@@ -14,3 +14,11 @@ deploy:
     local_dir: ./demo
     on:
       branch: master
+  
+  - provider: releases
+    api_key: $GH_KEY
+    file:
+      - "dist/*.js"
+    skip_cleanup: true
+    on:
+      tags: true

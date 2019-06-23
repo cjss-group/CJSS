@@ -2,14 +2,23 @@ language: node_js
 node_js: node
 
 script:
-- npm run eslint
-- npm run build
+  - npm run eslint
+  - npm run build
 
 deploy:
-  provider: releases
-  api_key: $GH_KEY
-  file:
-    - "dist/*.js"
-  skip_cleanup: true
-  on:
-    tags: true
+  - provider: pages
+    skip_cleanup: true
+    github_token: $GH_KEY # Set in the settings page of your repository as a secure variable
+    keep_history: true
+    committer_from_gh: true
+    local_dir: ./demo
+    on:
+      branch: master
+  
+  - provider: releases
+    api_key: $GH_KEY
+    file:
+      - "dist/*.js"
+    skip_cleanup: true
+    on:
+      tags: true

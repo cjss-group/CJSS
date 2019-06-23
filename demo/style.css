@@ -1,5 +1,6 @@
-@import url('component/nav.css');
 @import url('component/body.css');
+@import url('component/click-demo.css');
+@import url('component/downloads.css');
 
 /* Run a global script */
 script {

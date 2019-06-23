@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+body {
+  /* Data */
+  --data: js-expr({
+    name: 'world',
+  });
+
+  /* Markup */
+  --body: html(
+    <a href="https://github.com/cjss-group/CJSS/" class="github-link">
+      <span><code>cjss-group/CJSS</code></span>
+      <img src="media/github.png" srcset="media/github@2x.png 2x, media/github@3x.png 3x">
+    </a>
+    <div class="spacer">
+      <main class="center">
+        <h1>Hello ${data.name}!</h1>
+        <h2>This page was constructed entirely within CSS files. That includes all the data, markup, scripts, and also styles.</h2>
+
+        <h3>Click the items below to toggle.</h3>
+        <nav class="click-demo">{nav}</nav>
+        <h3>Download CJSS for your own project (please don’t!)</h3>
+        <nav class="downloads"
+            data-links="[{&quot;title&quot;: &quot;Development version&quot;, &quot;name&quot;: &quot;cjss.js&quot;}, {&quot;title&quot;: &quot;Minified version&quot;, &quot;name&quot;: &quot;cjss.min.js&quot;}]">
+          Title
+        </nav>
+        <p><recursion data-depth="4"></recursion></p>
+      </main>
+    </div>
+  );
+
+  /* Just some regular old CSS */
+  font-family: Roboto, sans-serif;
+  margin: 0;
+  background-image: linear-gradient( 70.6deg, rgba(172,30,255,1) 0.3%, rgba(65,35,251,1) 55.8%, rgba(35,251,224,1) 105.1% );
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex-direction: column;
+  flex: 1;
+}
+
+body > .github-link {
+  padding: 1rem;
+  align-self: flex-end;
+  text-decoration: none;
+  color: inherit;
+  font-size: 1.5em;
+  display: flex;
+  align-items: center;
+}
+
+body > .github-link > span {
+  overflow: hidden;
+  margin-right: -5px;
+}
+body > .github-link > img {
+  position: relative;
+  z-index: 1;
+  width: 64px;
+}
+
+body > .github-link > span > code {
+  padding: 1rem;
+  display: inline-block;
+  transition: transform 0.5s ease-out;
+}
+
+body > .github-link:not(:hover) > span > code {
+  transform: translateX(100%);
+  transition-timing-function: ease-in;
+}
+
+body > .spacer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+html {
+  height: 100%;
+}
+
+body h1 {
+  font-size: 50px;
+  margin: 0;
+}
+
+body h3 {
+  opacity: 0.6;
+  margin: 30px 0 20px 0;
+}
+
+.center {
+  text-align: center;
+}
+
+recursion {
+  border: 1.5px solid;
+  padding: 3px;
+  padding-left: 6px;
+  position: relative;
+  display: inline-block;
+  font-size: 0;
+
+  --data: js-expr({
+    depth: this.dataset.depth,
+  });
+  --body: js-expr(
+    data.depth > 0 ? `<recursion data-depth="${data.depth-1}"></recursion>` : ''
+  );
+}

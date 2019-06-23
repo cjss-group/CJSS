@@ -15,7 +15,7 @@ import CJSSError from './CJSSError';
  *
  * @param {CSSRule} rule The rule to parse.
  * @returns {CompiledRule[]} Zero or one compiled rule, depending on whethere any CJSS code is
- *   present. 
+ *   present.
  */
 function compileRule(rule) {
   const selector = rule.style.parentRule.selectorText;

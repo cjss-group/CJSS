@@ -17,7 +17,7 @@ export default [
     output: {
       file: './demo/dist/cjss.min.js',
       format: 'iife',
-      name: 'cjss',
+      name: 'CJSS',
     },
   },
 ];

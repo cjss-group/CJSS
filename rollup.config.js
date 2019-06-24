@@ -7,7 +7,7 @@ export default [
     output: {
       file: './demo/dist/cjss.js',
       format: 'iife',
-      name: 'cjss',
+      name: 'CJSS',
       sourcemap: 'inline',
     },
   },

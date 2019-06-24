@@ -12,9 +12,9 @@ const documentReady = new Promise((resolve) => {
 
 documentReady.then(() => cjss());
 
-export default {
+export {
   /** `CJSS.render()` runs all the CJSS rewrite rules. */
-  render: cjss,
+  cjss as render,
 
   /** Use `CJSS.Stage.{DATA, PREPARE, BODY, SCRIPT}` to specify the scope of the stage. */
   Stage,
@@ -23,7 +23,7 @@ export default {
    * Throw `CJSS.Error(message, originalError)` when you encounter an exception while parsing or
    * running the user’s code. The message, original error and the source location will be logged.
    */
-  Error: CJSSError,
+  CJSSError as Error,
 
   /**
    * `CJSS.registerPlugin(modeName, plugin, ...stages)` can be used to register a new mode.

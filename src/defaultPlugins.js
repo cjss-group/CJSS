@@ -1,5 +1,4 @@
 import registerPlugin from './registerPlugin';
-import functionFromString from './functionFromString';
 import Stage from './Stage';
 import CJSSError from './CJSSError';
 
@@ -28,7 +27,7 @@ registerPlugin('json', body => () => {
 registerPlugin('html', (body) => {
   const code = `return \`${body}\``;
   try {
-    const render = functionFromString(code, ['data', 'yield']);
+    const render = new Function('data', 'yield', code);
 
     return (element, data) => {
       try {
@@ -77,7 +76,7 @@ const assignBody = (element, body) => {
 
 const javascriptPlugin = (isBody, jsTransformer = x => x) => (js) => {
   try {
-    const f = functionFromString(jsTransformer(js), isBody ? ['data', 'yield'] : ['data']);
+    const f = new Function('data', ...isBody ? 'yield' : undefined, jsTransformer(js));
 
     return (element, data) => {
       try {

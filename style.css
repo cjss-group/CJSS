@@ -1,0 +1,14 @@
+@import url('component/body.css');
+@import url('component/click-demo.css');
+@import url('component/downloads.css');
+
+/* Run a global script */
+script {
+  --data: json({
+    "say": "Hello world!"
+  });
+
+  --script: js(
+    console.log(data.say);
+  );
+}

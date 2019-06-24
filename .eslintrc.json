@@ -9,6 +9,7 @@
     "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],
     "no-cond-assign": ["error", "except-parens"],
     "no-param-reassign": ["error", { "props": false }],
-    "no-continue": "off"
+    "no-continue": "off",
+    "no-new-func": "off"
   }
 }

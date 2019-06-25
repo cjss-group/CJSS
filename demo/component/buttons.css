@@ -1,6 +1,7 @@
 .buttons {
   display: flex;
   justify-content: center;
+  margin: 0.6em 0;
 }
 
 .buttons > * {

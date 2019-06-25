@@ -1,5 +1,4 @@
 import registerPlugin from './registerPlugin';
-import functionFromString from './functionFromString';
 import Stage from './Stage';
 import CJSSError from './CJSSError';
 
@@ -28,7 +27,7 @@ registerPlugin('json', body => () => {
 registerPlugin('html', (body) => {
   const code = `return \`${body}\``;
   try {
-    const render = functionFromString(code, ['data', 'yield']);
+    const render = new Function('data', 'yield', code);
 
     return (element, data) => {
       try {
@@ -75,9 +74,16 @@ const assignBody = (element, body) => {
   addElement(body);
 };
 
+/**
+ * Prepare a JavaScript plugin, with custom preprocessing and optional input/output of the body.
+ *
+ * @param {Boolean} isBody Whether this function is being used to generate the body, and so has
+ *   access to `yield`, and gives the new children as a return value.
+ * @param {*} jsTransformer How to prepare the given JavaScript snippet for execution
+ */
 const javascriptPlugin = (isBody, jsTransformer = x => x) => (js) => {
   try {
-    const f = functionFromString(jsTransformer(js), isBody ? ['data', 'yield'] : ['data']);
+    const f = new Function('data', isBody ? 'yield' : undefined, jsTransformer(js));
 
     return (element, data) => {
       try {

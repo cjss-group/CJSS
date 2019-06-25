@@ -10,6 +10,7 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "eslint": "eslint src",
+    "precommit": "npm run eslint",
     "tidy": "eslint --fix src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -34,6 +35,7 @@
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.3",
+    "husky": "^2.4.1",
     "rollup": "^1.15.6",
     "rollup-plugin-terser": "^5.0.0"
   }

@@ -19,10 +19,14 @@ body {
 
         <h3>Click the items below to toggle.</h3>
         <nav class="click-demo">{nav}</nav>
-        <h3>Download CJSS for your own project (please don’t!)</h3>
+        <h3>Use CJSS in your own project (please don’t!)</h3>
         <nav class="downloads"
-            data-links="[{&quot;title&quot;: &quot;Development version&quot;, &quot;name&quot;: &quot;cjss.js&quot;}, {&quot;title&quot;: &quot;Minified version&quot;, &quot;name&quot;: &quot;cjss.min.js&quot;}]">
-          Title
+            data-links="[{&quot;title&quot;: &quot;Stable&quot;, &quot;name&quot;: &quot;cjss.min.js&quot;, &quot;href&quot;: &quot;https://github.com/cjss-group/CJSS/releases/latest/cjss.min.js&quot;}, {&quot;title&quot;: &quot;Latest&quot;, &quot;name&quot;: &quot;cjss.min.js&quot;}]">
+          {downloads}
+        </nav>
+        <nav class="downloads"
+            data-links="[{&quot;title&quot;: &quot;Source code&quot;, &quot;href&quot;: &quot;https://github.com/cjss-group/CJSS/&quot;}, {&quot;title&quot;: &quot;<code>npm</code> (coming soon)&quot;, &quot;href&quot;: &quot;#&quot;}]">
+          {links}
         </nav>
         <p><recursion data-depth="4"></recursion></p>
       </main>
@@ -37,9 +41,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  min-height: 100%;
   flex-direction: column;
   flex: 1;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 body > .github-link {
@@ -77,6 +83,7 @@ body > .spacer {
   flex: 1;
   display: flex;
   align-items: center;
+  padding: 0 5em;
 }
 
 html {

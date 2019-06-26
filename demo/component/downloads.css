@@ -12,8 +12,11 @@
   );
 
   --body: js-expr(
-    data.map(({ title, name }) => `
-      <a href="dist/${name}" download="${name}">${title} (<code>${name}</code>)</a>
+    data.map(({ title, name, href }) => `
+      <a href="${href || `dist/${name}`}"${name && `download="${name}"
+        ${href === '#' ? `onclick="event.preventDefault();"` : ''}`}>
+        ${title}${name ? ` (<code>${name}</code>)` : ''}
+      </a>
     `).join('')
   );
 }

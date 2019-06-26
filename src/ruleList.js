@@ -6,7 +6,7 @@
  */
 export default function ruleList(styleSheet) {
   try {
-    return styleSheet.rules || styleSheet.cssRules;
+    return styleSheet.rules || styleSheet.cssRules || [];
   } catch (e) {
     if (e.name !== 'SecurityError') throw e;
     return [];

@@ -18,7 +18,7 @@ deploy:
   - provider: releases
     api_key: $GH_KEY
     file:
-      - "dist/*.js"
+      - "demo/dist/*.js"
     skip_cleanup: true
     on:
       tags: true

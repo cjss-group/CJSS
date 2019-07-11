@@ -116,7 +116,8 @@ export function runRules(rules, limit = Infinity, subtree = document) {
       let data = {};
       for (const stage of rule.stages) {
         try {
-          data = stage.run(element, data) || data;
+          const newData = stage.run(element, data);
+          if (newData !== undefined) data = newData;
         } catch (e) {
           if (e instanceof CJSSError) {
             stage.logError(e, element);

@@ -8,7 +8,7 @@ export default [
       file: './demo/dist/cjss.min.js',
       sourcemap: process.argv.includes('-w') ? 'inline' : false,
       format: 'iife',
-      name: 'cjss',
+      name: 'CJSS',
     },
   },
 ];
